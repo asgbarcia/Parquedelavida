@@ -18,6 +18,8 @@
 		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCaSBSTv2RhP_DRnZKYgzyy03KdlROXHa8" async defer></script>
 		<!-- Plugin Geocoding -->		
 		<link rel="stylesheet" href="plugins/Control.Geocoder.css" />
+		<!-- Plugin Geolocation -->	
+		<link rel="stylesheet" href="plugins/L.Control.Locate.min.css" />		
 		<!-- Plugin Sidebar -->		
 		<link rel="stylesheet" href="plugins/L.Control.Sidebar.css">
 		<!-- Plugin home -->		
@@ -165,6 +167,8 @@
 		<script src="plugins/leaflet.zoomhome.min.js"></script>
 		<!-- Plugin localizador -->	
 		<script src="plugins/Control.Geocoder.js"></script>
+		<!-- Plugin Geolocation -->			
+		<script src="plugins/L.Control.Locate.js" ></script>
 		<!-- Plugin capas de Google -->
 		<script src='https://unpkg.com/leaflet.gridlayer.googlemutant@latest/Leaflet.GoogleMutant.js'></script>
 		<!-- Plugin sidebar -->		
@@ -476,10 +480,9 @@
 				};
 				title1.addTo(map);
 			//minimapa	
-			var miniMap = new L.Control.MiniMap(osm2, { toggleDisplay: true, position:"bottomright", width:100,height:100,}).addTo(map); 					
+			var miniMap = new L.Control.MiniMap(osm2, { toggleDisplay: true, position:"bottomright", width:100,height:100,minimized:"on",}).addTo(map); 					
 			//zoomHome
 			var zoomHome = L.Control.zoomHome({ position: 'topleft', homeCoordinates:[43.5405, -6.5668], zoomHomeTitle:'Posición inicial'}).addTo(map);	
-
 
 			//fullscreen						
 			var fsControl = new L.Control.FullScreen();
@@ -493,7 +496,6 @@
 			L.control.scale().addTo(map);
 			//Buscador
 			var geocoder = L.Control.geocoder({ position: 'topleft',
-
 			}).addTo(map);
 			//Límites
 			var sendas = L.geoJson(sendas, {
@@ -604,19 +606,9 @@
 
 
 			// Geolocation			
-			function buscarLocalizacion(e) {
-			var mydate = new Date(e.timestamp);
-			L.marker(e.latlng).addTo(map).bindPopup(mydate.toString());
-			L.marker(e.latlng).addTo(map).bindPopup(e.timestamp.toString());
-			}
-			function errorLocalizacion(e) {
-			alert("No es posible encontrar su ubicación. Es posible que tenga que activar la Geolocation.");
-			}
-			map.on('locationerror', errorLocalizacion);
-			map.on('locationfound', buscarLocalizacion);
-			map.locate({setView: true, maxZoom:12});
-
-			
+			var lc = L.control.locate({
+			position: 'topleft', strings: {title: "YOU ARE HERE"}
+			}).addTo(map);			
 			//Botones	
 			var sidebar = L.control.sidebar('sidebar', { closeButton:true, position: 'left' });
 			map.addControl(sidebar);
