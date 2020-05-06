@@ -1,0 +1,5 @@
+url=tile1/ZZZ/XXX/YYY.png
+minzoom=16
+maxzoom=20
+center=-6.567131 43.540440
+type=tms
